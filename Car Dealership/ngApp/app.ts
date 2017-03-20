@@ -1,6 +1,6 @@
 namespace myapp {
 
-    angular.module('myapp', ['ui.router', 'ngResource', 'ui.bootstrap']).config((
+    angular.module('myapp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngMessages']).config((
         $stateProvider: ng.ui.IStateProvider,
         $urlRouterProvider: ng.ui.IUrlRouterProvider,
         $locationProvider: ng.ILocationProvider
@@ -30,7 +30,5 @@ namespace myapp {
         // Enable HTML5 navigation
         $locationProvider.html5Mode(true);
     });
-
-    
 
 }

@@ -1,5 +1,5 @@
 "use strict";
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 var makes = [
     { id: 1, name: 'BMW' },
@@ -67,4 +67,11 @@ function findCar(id) {
     });
     return matches.length ? matches[0] : null;
 }
+router.get('/cars/search/:search', function (req, res, next) {
+    var search = req.params['search'];
+    var matches = cars.filter(function (car) {
+        return car.ShortDescription.indexOf(search) >= 0;
+    });
+    res.json(matches);
+});
 module.exports = router;

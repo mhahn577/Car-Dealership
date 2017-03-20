@@ -71,4 +71,13 @@ function findCar(id:number) {
   return matches.length ? matches[0] : null;
 }
 
+/* find matching cars */
+router.get('/cars/search/:search', function(req, res, next) {
+       let search = req.params['search'];
+       let matches = cars.filter((car) => {
+          return car.ShortDescription.indexOf(search) >= 0;
+       });
+       res.json(matches);
+});
+
 export = router;
