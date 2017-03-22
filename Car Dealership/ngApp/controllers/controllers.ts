@@ -3,28 +3,29 @@ namespace myapp.Controllers {
     const apiUrl = '/api/cars/search/';
 
     class DialogController {
-        public pickColor(favoriteColor: string) {
-          this.$mdDialog.hide(favoriteColor);
+        public close() {
+          this.$mdDialog.hide();
         }
 
-        constructor(private $mdDialog: angular.material.IDialogService) { }
+        constructor(private $http: ng.IHttpService, private $mdDialog: angular.material.IDialogService, public car: string) {
+          //shortDescription = HomeController.cars;
+        }
       }
+
     export class HomeController {
       public cars;
       public search;
-      public favoriteColor: string
+      public makes;
+      public name;
 
-      public openDialog() {
+      public openDialog(car: string) {
             this.$mdDialog.show({
               controller: DialogController,
               controllerAs: 'dialog',
-              templateUrl: '/ngApp/dialog.html',
-              clickOutsideToClose: true
-            }).then((favoriteColor: string) => {
-                this.favoriteColor = favoriteColor;
-            }, () => {
-                this.favoriteColor = 'You cancelled the dialog.';
-            });
+              templateUrl: '/ngApp/views/dialog.html',
+              clickOutsideToClose: true,
+              locals: { car: car }
+            })
           }
 
       public displayDetail(car) {
@@ -32,16 +33,30 @@ namespace myapp.Controllers {
       }
 
       public fetch() {
-        console.log("called fetch with " + apiUrl + " " + this.search);
         this.$http.get('/api/cars/search/' + this.search).then((res) => {
           console.log(res.data);
           this.cars = res.data;
         })
         this.search = ""; // reset search
-        console.log("done with fetch");
       }
 
-      //static $inject = ['$mdDialog'];
+      public fetchbyID() {
+        let localMake = this.findMake(this.name);
+        this.$http.get('/api/cars/searchID/' + localMake.id)
+            .then((response) => {
+                this.cars = response.data;
+            })
+            .catch((response) => {
+                console.error('Could not retrieve cars.');
+            });
+      }
+
+      public findMake(name:string) {
+        let matches = this.makes.filter((make) => {
+          return make.name == name;
+        });
+        return matches.length ? matches[0] : null;
+      }
 
       constructor(private $http: ng.IHttpService, private $mdDialog: angular.material.IDialogService) {
           this.$http.get('/api/cars/')
@@ -49,7 +64,15 @@ namespace myapp.Controllers {
                   this.cars = response.data;
               })
               .catch((response) => {
-                  console.error('Could not retrieve movies.');
+                  console.error('Could not retrieve cars.');
+              });
+
+              this.$http.get('/api/makes/')
+              .then((response) => {
+                  this.makes = response.data;
+              })
+              .catch((response) => {
+                  console.error('Could not retrieve cars.');
               });
       }
 

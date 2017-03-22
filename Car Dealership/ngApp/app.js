@@ -1,6 +1,6 @@
 var myapp;
 (function (myapp) {
-    angular.module('myapp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngMessages']).config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    angular.module('myapp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngMessages', 'ngMaterial']).config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
         $stateProvider
             .state('home', {
             url: '/',

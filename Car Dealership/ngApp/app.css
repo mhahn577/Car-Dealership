@@ -1,7 +1,23 @@
 *
-{
-  box-sizing: border-box;
+
+body {
+    background-color: AntiqueWhite;
 }
+
+{
+    box-sizing: border-box;
+}
+
+h2, h3, h5 {
+    text-align: center;
+}
+
+input, select {
+    display: block;
+    margin: 0 auto;
+}
+
+ul { list-style: none; position: relative; float: left; display: block; left: 40%; }
 
 .Modal-backdrop
 {

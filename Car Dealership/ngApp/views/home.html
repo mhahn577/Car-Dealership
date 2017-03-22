@@ -19,25 +19,28 @@
 
 <body ng-controller="homeController as vm">
 
+<hr style="border: 1px solid SlateGray"/>
+<h2>Welcome to Mike's Motors</h2>
+<h3>We have the best auto prices in town!</h3>
+<hr style="border: 1px solid SlateGray"/>
+
    <p>
       <h3>Choose your car make:</h3>
-      <label for="make"></label>
-      <select id="make" ng-model="controller.search" ng-change="controller.fetch()">
-          <option></option>
-          <option>MINI</option>
-          <option>Tesla</option>
+      <select id="make" ng-model="controller.name" ng-change="controller.fetchbyID()">
+        <option ng-repeat="make in controller.makes">{{make.name}}</option>
       </select>
    </p>
 
-<hr>
+<hr style="border: 1px solid SlateGray"/>
     <h3>Search for your car:</h3>
-  <input ng-model="controller.search" ng-model-options="{debounce:1000}" ng-change="controller.fetch()"/>
-<hr>
+    <input ng-model="controller.search" ng-model-options="{debounce:1000}" ng-change="controller.fetch()"/>
+<hr style="border: 1px solid SlateGray"/>
 
-<h3>Here are the cars:</h3>
+<h3>Available cars:</h3>
+<h5>(Click on a car to learn more!)</h5>
 <ul>
   <li ng-repeat="car in controller.cars">
-      {{car.ShortDescription}}
+      <md-button class="md-raised" ng-click="controller.openDialog(car)">{{car.ShortDescription}}</md-button>
   </li>
 </ul>
 

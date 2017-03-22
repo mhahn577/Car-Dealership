@@ -4,11 +4,13 @@ var myapp;
     (function (Controllers) {
         var apiUrl = '/api/cars/search/';
         var DialogController = (function () {
-            function DialogController($mdDialog) {
+            function DialogController($http, $mdDialog, car) {
+                this.$http = $http;
                 this.$mdDialog = $mdDialog;
+                this.car = car;
             }
-            DialogController.prototype.pickColor = function (favoriteColor) {
-                this.$mdDialog.hide(favoriteColor);
+            DialogController.prototype.close = function () {
+                this.$mdDialog.hide();
             };
             return DialogController;
         }());
@@ -22,20 +24,23 @@ var myapp;
                     _this.cars = response.data;
                 })
                     .catch(function (response) {
-                    console.error('Could not retrieve movies.');
+                    console.error('Could not retrieve cars.');
+                });
+                this.$http.get('/api/makes/')
+                    .then(function (response) {
+                    _this.makes = response.data;
+                })
+                    .catch(function (response) {
+                    console.error('Could not retrieve cars.');
                 });
             }
-            HomeController.prototype.openDialog = function () {
-                var _this = this;
+            HomeController.prototype.openDialog = function (car) {
                 this.$mdDialog.show({
                     controller: DialogController,
                     controllerAs: 'dialog',
-                    templateUrl: '/ngApp/dialog.html',
-                    clickOutsideToClose: true
-                }).then(function (favoriteColor) {
-                    _this.favoriteColor = favoriteColor;
-                }, function () {
-                    _this.favoriteColor = 'You cancelled the dialog.';
+                    templateUrl: '/ngApp/views/dialog.html',
+                    clickOutsideToClose: true,
+                    locals: { car: car }
                 });
             };
             HomeController.prototype.displayDetail = function (car) {
@@ -43,13 +48,28 @@ var myapp;
             };
             HomeController.prototype.fetch = function () {
                 var _this = this;
-                console.log("called fetch with " + apiUrl + " " + this.search);
                 this.$http.get('/api/cars/search/' + this.search).then(function (res) {
                     console.log(res.data);
                     _this.cars = res.data;
                 });
                 this.search = "";
-                console.log("done with fetch");
+            };
+            HomeController.prototype.fetchbyID = function () {
+                var _this = this;
+                var localMake = this.findMake(this.name);
+                this.$http.get('/api/cars/searchID/' + localMake.id)
+                    .then(function (response) {
+                    _this.cars = response.data;
+                })
+                    .catch(function (response) {
+                    console.error('Could not retrieve cars.');
+                });
+            };
+            HomeController.prototype.findMake = function (name) {
+                var matches = this.makes.filter(function (make) {
+                    return make.name == name;
+                });
+                return matches.length ? matches[0] : null;
             };
             return HomeController;
         }());

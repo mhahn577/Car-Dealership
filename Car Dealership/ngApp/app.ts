@@ -1,6 +1,6 @@
 namespace myapp {
 
-    angular.module('myapp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngMessages']).config((
+    angular.module('myapp', ['ui.router', 'ngResource', 'ui.bootstrap', 'ngMessages', 'ngMaterial']).config((
         $stateProvider: ng.ui.IStateProvider,
         $urlRouterProvider: ng.ui.IUrlRouterProvider,
         $locationProvider: ng.ILocationProvider

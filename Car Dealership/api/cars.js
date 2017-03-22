@@ -67,6 +67,13 @@ function findCar(id) {
     });
     return matches.length ? matches[0] : null;
 }
+router.get('/cars/searchID/:makeID', function (req, res, next) {
+    var makeID = req.params['makeID'];
+    var matches = cars.filter(function (car) {
+        return car.CarMakeId == makeID;
+    });
+    res.json(matches);
+});
 router.get('/cars/search/:search', function (req, res, next) {
     var search = req.params['search'];
     var matches = cars.filter(function (car) {
